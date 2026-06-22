@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
+  <meta name="apple-mobile-web-app-capable" content="yes"/>
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+  <meta name="apple-mobile-web-app-title" content="Savio"/>
+  <meta name="theme-color" content="#1c1c1e"/>
+  <title>Savio</title>
+  <link rel="manifest" href="manifest.json"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+
+  <div class="app">
+
+    <!-- ══ SCREEN: HOME ══ -->
+    <div class="screen active" id="screen-home">
+      <div class="ios-nav" id="home-nav">
+        <span class="ios-nav-title">Savio</span>
+        <div class="ios-nav-right">
+          <button class="icon-btn" id="btn-fav-open" aria-label="Favoriten">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+            <span class="icon-badge" id="fav-badge" hidden>0</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="scroll-view" id="home-scroll">
+        <!-- Hero -->
+        <div class="hero">
+          <div class="hero-glow"></div>
+          <p class="hero-eyebrow">Café · Mattersburg</p>
+          <h1 class="hero-wordmark">Savio</h1>
+          <p class="hero-tagline">Getränke & Speisen</p>
+          <div class="hero-btns">
+            <button class="ghost-pill" id="btn-random-drink">🎲 Zufallsgetränk</button>
+            <button class="ghost-pill" id="btn-random-food">🍽 Zufallsspeise</button>
+          </div>
+        </div>
+
+        <!-- Category chips -->
+        <div class="chip-scroller-wrap">
+          <div class="chip-scroller" id="cat-chips"></div>
+        </div>
+
+        <!-- Menu grouped by category -->
+        <div id="menu-content"></div>
+
+        <div class="safe-bottom"></div>
+      </div>
+    </div>
+
+    <!-- ══ SCREEN: SEARCH ══ -->
+    <div class="screen" id="screen-search">
+      <div class="search-header">
+        <div class="search-field-row">
+          <div class="search-field">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.35-4.35"/></svg>
+            <input id="search-input" type="search" placeholder="Suchen…" autocomplete="off" autocorrect="off" autocapitalize="none"/>
+            <button class="field-clear" id="search-clear" hidden>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10" opacity=".35"/><path d="M15.18 8.82a.75.75 0 0 0-1.06 0L12 10.94 9.88 8.82a.75.75 0 1 0-1.06 1.06L10.94 12l-2.12 2.12a.75.75 0 1 0 1.06 1.06L12 13.06l2.12 2.12a.75.75 0 0 0 1.06-1.06L13.06 12l2.12-2.12a.75.75 0 0 0 0-1.06z"/></svg>
+            </button>
+          </div>
+          <button class="cancel-btn" id="search-cancel">Abbrechen</button>
+        </div>
+        <div class="chip-scroller-wrap">
+          <div class="chip-scroller" id="filter-chips">
+            <button class="chip active" data-filter="all">Alles</button>
+            <button class="chip" data-filter="food">🍕 Essen</button>
+            <button class="chip" data-filter="drinks">🍹 Getränke</button>
+            <button class="chip" data-filter="alcoholic">🍷 Alkohol</button>
+            <button class="chip" data-filter="non-alcoholic">🌿 Alkoholfrei</button>
+            <button class="chip" data-filter="vegetarian">🌱 Vegetarisch</button>
+            <button class="chip" data-filter="vegan">☘️ Vegan</button>
+            <button class="chip" data-filter="popular">⭐ Beliebt</button>
+          </div>
+        </div>
+      </div>
+      <div class="scroll-view" id="search-scroll">
+        <div id="search-results">
+          <div class="empty-state">
+            <div class="empty-icon">🔍</div>
+            <p class="empty-title">Nach Getränken suchen</p>
+            <p class="empty-sub">Name, Zutat oder Kategorie</p>
+          </div>
+        </div>
+        <div class="safe-bottom"></div>
+      </div>
+    </div>
+
+    <!-- ══ SCREEN: FAVORITES ══ -->
+    <div class="screen" id="screen-favs">
+      <div class="ios-nav">
+        <span class="ios-nav-title">Favoriten</span>
+      </div>
+      <div class="scroll-view">
+        <div id="fav-content">
+          <div class="empty-state">
+            <div class="empty-icon">🤍</div>
+            <p class="empty-title">Keine Favoriten</p>
+            <p class="empty-sub">Tippe auf ♡ um Artikel zu speichern</p>
+          </div>
+        </div>
+        <div class="safe-bottom"></div>
+      </div>
+    </div>
+
+  </div><!-- /app -->
+
+  <!-- ══ TAB BAR ══ -->
+  <nav class="tab-bar">
+    <button class="tab" data-tab="home" aria-label="Menü">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+      <span>Menü</span>
+    </button>
+    <button class="tab" data-tab="search" aria-label="Suche">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.35-4.35"/></svg>
+      <span>Suche</span>
+    </button>
+    <button class="tab" data-tab="favs" aria-label="Favoriten">
+      <div style="position:relative;display:inline-flex">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+        <span class="tab-badge" id="tab-fav-badge" hidden>0</span>
+      </div>
+      <span>Favoriten</span>
+    </button>
+  </nav>
+
+  <!-- ══ BOTTOM SHEET (item detail) ══ -->
+  <div class="sheet-backdrop" id="sheet-backdrop" hidden></div>
+  <div class="sheet" id="item-sheet" hidden>
+    <div class="sheet-handle-bar"><div class="sheet-handle"></div></div>
+    <div class="sheet-scroll-area">
+      <div id="sheet-body"></div>
+      <div class="safe-bottom"></div>
+    </div>
+  </div>
+
+  <!-- ══ TOAST ══ -->
+  <div class="toast" id="toast" hidden></div>
+
+  <script src="script.js"></script>
+</body>
+</html>
