@@ -1,6 +1,7 @@
 /**
  * SAVIO — iOS-native digital menu
- * Menu data embedded directly (no fetch needed)
+ * Tabs: Getränke | Speisen | Suche
+ * Legal: footer links → bottom sheet
  */
 
 const MENU_DATA = {
@@ -374,13 +375,11 @@ const S = {
 // ══ BOOT ═══════════════════════════════════════════
 function boot() {
   S.menu = MENU_DATA;
-
   S.menu.categories.forEach(cat => {
     cat.items.forEach(item => {
       S.all.push({ ...item, catId: cat.id, catName: cat.name, catType: cat.type, catEmoji: cat.emoji });
     });
   });
-
   buildChips('drinks');
   buildChips('food');
   renderDrinks();
@@ -401,11 +400,11 @@ function switchTab(tab) {
 function buildChips(type) {
   const el = document.getElementById(type + '-chips');
   const cats = S.menu.categories.filter(c => c.type === type);
-  const allBtn = '<button class="chip active" data-cat="all" data-type="' + type + '">Alle</button>';
-  const catBtns = cats.map(c =>
-    '<button class="chip" data-cat="' + c.id + '" data-type="' + type + '">' + c.emoji + ' ' + c.name + '</button>'
-  ).join('');
-  el.innerHTML = allBtn + catBtns;
+  let html = '<button class="chip active" data-cat="all" data-type="' + type + '">Alle</button>';
+  cats.forEach(c => {
+    html += '<button class="chip" data-cat="' + c.id + '" data-type="' + type + '">' + c.emoji + ' ' + c.name + '</button>';
+  });
+  el.innerHTML = html;
   el.querySelectorAll('.chip').forEach(btn => {
     btn.addEventListener('click', () => {
       if (type === 'drinks') S.drinksCat = btn.dataset.cat;
@@ -419,34 +418,35 @@ function buildChips(type) {
 
 // ══ RENDER ═════════════════════════════════════════
 function renderDrinks() { renderType('drinks', 'drinks-content', S.drinksCat); }
-function renderFood()   { renderType('food',   'food-content',   S.foodCat);   }
+function renderFood()   { renderType('food', 'food-content', S.foodCat); }
 
 function renderType(type, elId, activeCat) {
   const el = document.getElementById(elId);
   let cats = S.menu.categories.filter(c => c.type === type);
   if (activeCat !== 'all') cats = cats.filter(c => c.id === activeCat);
-  el.innerHTML = cats.map(cat => catSection(cat, cat.items)).join('');
+  el.innerHTML = cats.map(cat => catSection(cat)).join('');
 }
 
-function catSection(cat, items) {
+function catSection(cat) {
+  const rows = cat.items.map(item => rowHTML({
+    ...item, catId: cat.id, catName: cat.name, catType: cat.type, catEmoji: cat.emoji
+  })).join('');
   return '<div class="cat-section" id="cat-' + cat.id + '">' +
     '<div class="cat-header" onclick="toggleCat(\'' + cat.id + '\')">' +
       '<span class="cat-emoji">' + cat.emoji + '</span>' +
       '<span class="cat-title">' + cat.name + '</span>' +
-      '<span class="cat-count">' + items.length + '</span>' +
+      '<span class="cat-count">' + cat.items.length + '</span>' +
       '<span class="cat-chevron">›</span>' +
     '</div>' +
-    '<div class="cat-rows">' + items.map(item => rowHTML({
-      ...item, catId: cat.id, catName: cat.name, catType: cat.type, catEmoji: cat.emoji
-    })).join('') + '</div>' +
+    '<div class="cat-rows">' + rows + '</div>' +
   '</div>';
 }
 
 function rowHTML(item) {
   const sub = item.ingredients || item.description || '';
-  const isPopular = item.tags && item.tags.includes('popular');
+  const dot = (item.tags && item.tags.includes('popular')) ? '<div class="popular-dot"></div>' : '';
   return '<div class="item-row" onclick="openSheet(\'' + item.id + '\')">' +
-    (isPopular ? '<div class="popular-dot"></div>' : '') +
+    dot +
     '<div class="item-row-body">' +
       '<div class="item-row-name">' + escHtml(item.name) + '</div>' +
       (sub ? '<div class="item-row-sub">' + escHtml(truncate(sub, 52)) + '</div>' : '') +
@@ -462,18 +462,15 @@ function toggleCat(id) {
   document.getElementById('cat-' + id).classList.toggle('collapsed');
 }
 
-// ══ SHEET ══════════════════════════════════════════
+// ══ ITEM SHEET ═════════════════════════════════════
 function openSheet(itemId) {
   const item = S.all.find(i => i.id === itemId);
   if (!item) return;
-
   const tagMap = { alcoholic:'Alkoholisch', vegetarian:'Vegetarisch', vegan:'Vegan', popular:'⭐ Beliebt', signature:'✦ Signature' };
   const tagHtml = (item.tags || []).map(t => {
     const cls = ['alcoholic','vegetarian','vegan','popular','signature'].includes(t) ? 'tag-' + t : 'tag-default';
-    const lbl = tagMap[t] || t;
-    return '<span class="sheet-tag ' + cls + '">' + lbl + '</span>';
+    return '<span class="sheet-tag ' + cls + '">' + (tagMap[t] || t) + '</span>';
   }).join('');
-
   let html = '<p class="sheet-cat">' + item.catEmoji + ' ' + item.catName + '</p>';
   html += '<p class="sheet-name">' + escHtml(item.name) + '</p>';
   html += '<p class="sheet-price">' + fmtPrice(item.price) + (item.volume ? ' <span class="sheet-volume">/ ' + item.volume + '</span>' : '') + '</p>';
@@ -481,7 +478,6 @@ function openSheet(itemId) {
   if (item.description) html += '<div class="sheet-divider"></div><p class="sheet-label">Beschreibung</p><p class="sheet-value">' + escHtml(item.description) + '</p>';
   if (item.ingredients) html += '<div class="sheet-divider"></div><p class="sheet-label">Zutaten</p><p class="sheet-value">' + escHtml(item.ingredients) + '</p>';
   if (item.allergens)   html += '<div class="sheet-divider"></div><p class="sheet-label">Allergene</p><p class="sheet-value">' + escHtml(item.allergens) + '</p>';
-
   document.getElementById('sheet-body').innerHTML = html;
   document.getElementById('sheet-backdrop').hidden = false;
   document.getElementById('item-sheet').hidden = false;
@@ -490,6 +486,74 @@ function openSheet(itemId) {
 function closeSheet() {
   document.getElementById('sheet-backdrop').hidden = true;
   document.getElementById('item-sheet').hidden = true;
+}
+
+// ══ LEGAL SHEET ════════════════════════════════════
+const LEGAL = {
+  impressum: {
+    eyebrow: '§ 5 ECG · § 14 UGB · § 63 GewO',
+    title: 'Impressum',
+    html: '<div class="legal-group">' +
+      lrow('Betreiber', 'Verein Savio') +
+      lrow('Adresse', 'Hauptstraße 1, 7210 Mattersburg, Österreich') +
+      lrow('Telefon', '<a href="tel:+436768373067">+43 676 837 306 74</a>') +
+      lrow('E-Mail', '<a href="mailto:office@verein-savio.at">office@verein-savio.at</a>') +
+      lrow('Website', '<a href="https://cafe-savio.at" target="_blank" rel="noopener">cafe-savio.at</a>') +
+      lrow('Tätigkeit', 'Café- und Gastronomiebetrieb') +
+      lrow('Rechtsvorschriften', 'Gewerbeordnung (GewO) · <a href="https://www.ris.bka.gv.at" target="_blank" rel="noopener">ris.bka.gv.at</a>') +
+      lrow('Aufsichtsbehörde', 'Bezirkshauptmannschaft Mattersburg') +
+    '</div>' +
+    '<p class="legal-stamp">Stand: Juni 2026</p>'
+  },
+  datenschutz: {
+    eyebrow: 'Art. 13 DSGVO (EU) 2016/679',
+    title: 'Datenschutz',
+    html: '<div class="legal-group">' +
+      lblk('Verantwortlicher', 'Verein Savio, Hauptstraße 1, 7210 Mattersburg · office@verein-savio.at') +
+      lblk('Erhobene Daten', 'Diese App ist rein informativ. Es werden <strong>keine personenbezogenen Daten</strong> erhoben, gespeichert oder verarbeitet. Keine Nutzerkonten, keine Formulare, keine Zahlung.') +
+      lblk('Cookies & Tracking', '<strong>Keine Cookies</strong>, kein Tracking, keine Analyse-Tools, keine Social-Media-Plugins.') +
+      lblk('Hosting', 'GitHub Pages (GitHub, Inc., San Francisco, USA). Technisch bedingt speichert GitHub Server-Logfiles (IP, Datum, Seite). Basis: Art. 6 Abs. 1 lit. f DSGVO. Mehr: <a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement" target="_blank" rel="noopener">GitHub Privacy Statement</a>.') +
+      lblk('Google Fonts', 'Schriftarten von Google Ireland Limited, Dublin. Ihre IP wird dabei übermittelt. Basis: Art. 6 Abs. 1 lit. f DSGVO. Mehr: <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Google Datenschutz</a>.') +
+      lblk('Ihre Rechte (Art. 15–22)', 'Auskunft · Berichtigung · Löschung · Einschränkung · Datenübertragbarkeit · Widerspruch. Da keine Daten verarbeitet werden, sind diese Rechte faktisch gegenstandslos — aber vollständig gewährt.') +
+      lblk('Beschwerde', 'Österreichische Datenschutzbehörde (DSB), Barichgasse 40–42, 1030 Wien · <a href="mailto:dsb@dsb.gv.at">dsb@dsb.gv.at</a> · <a href="https://www.dsb.gv.at" target="_blank" rel="noopener">dsb.gv.at</a>') +
+    '</div>' +
+    '<p class="legal-stamp">Stand: Juni 2026</p>'
+  },
+  odr: {
+    eyebrow: 'EU-Verordnung Nr. 524/2013 · LMIV EU 1169/2011',
+    title: 'Rechtliches',
+    html: '<div class="legal-group">' +
+      lblk('Online-Streitbeilegung', 'Die EU-Kommission stellt eine OS-Plattform bereit: <a href="https://ec.europa.eu/consumers/odr" target="_blank" rel="noopener">ec.europa.eu/consumers/odr</a>. Wir sind nicht verpflichtet und nicht bereit, an einem Schlichtungsverfahren teilzunehmen.') +
+      lblk('Allergene & Preise', 'Angaben zu Allergenen dienen der Orientierung gemäß EU-Lebensmittelinformationsverordnung (LMIV). Alle Preise unverbindlich — maßgeblich sind die im Café ausgehängten Preislisten. Bei Allergien bitte Personal fragen.') +
+      lblk('Urheberrecht', 'Alle Inhalte (Texte, Design) sind urheberrechtlich geschützt gemäß § 1 UrhG. Nutzung ohne Genehmigung untersagt.') +
+      lblk('Externe Links', 'Für Inhalte verlinkter Seiten übernehmen wir keine Haftung.') +
+    '</div>' +
+    '<p class="legal-stamp">Stand: Juni 2026</p>'
+  }
+};
+
+function lrow(label, value) {
+  return '<div class="legal-row"><span class="legal-label">' + label + '</span><span class="legal-value">' + value + '</span></div>';
+}
+function lblk(title, text) {
+  return '<div class="legal-block"><p class="legal-block-title">' + title + '</p><p class="legal-block-text">' + text + '</p></div>';
+}
+
+function openLegal(key) {
+  const data = LEGAL[key];
+  if (!data) return;
+  document.getElementById('legal-body').innerHTML =
+    '<p class="legal-sheet-eyebrow">' + data.eyebrow + '</p>' +
+    '<p class="legal-sheet-title">' + data.title + '</p>' +
+    '<div class="sheet-divider"></div>' +
+    data.html;
+  document.getElementById('legal-backdrop').hidden = false;
+  document.getElementById('legal-sheet').hidden = false;
+}
+
+function closeLegal() {
+  document.getElementById('legal-backdrop').hidden = true;
+  document.getElementById('legal-sheet').hidden = true;
 }
 
 // ══ SEARCH ═════════════════════════════════════════
@@ -505,35 +569,29 @@ function renderSearch() {
   const el = document.getElementById('search-results');
   const q = S.searchQuery.trim().toLowerCase();
   const f = S.activeFilter;
-
   if (!q && f === 'all') {
     el.innerHTML = '<div class="empty-state"><div class="empty-icon">🔍</div><p class="empty-title">Suchen…</p><p class="empty-sub">Name, Zutat oder Kategorie</p></div>';
     return;
   }
-
   let items = [...S.all];
   if (f === 'drinks') items = items.filter(i => i.catType === 'drinks');
   else if (f === 'food') items = items.filter(i => i.catType === 'food');
   else if (f !== 'all') items = items.filter(i => i.tags && i.tags.includes(f));
-
   if (q) items = items.filter(i =>
     i.name.toLowerCase().includes(q) ||
     (i.description && i.description.toLowerCase().includes(q)) ||
     (i.ingredients && i.ingredients.toLowerCase().includes(q)) ||
     i.catName.toLowerCase().includes(q)
   );
-
   if (!items.length) {
     el.innerHTML = '<div class="empty-state"><div class="empty-icon">😕</div><p class="empty-title">Nichts gefunden</p><p class="empty-sub">Anderen Begriff versuchen</p></div>';
     return;
   }
-
   const grouped = new Map();
   S.menu.categories.forEach(cat => {
     const ci = items.filter(i => i.catId === cat.id);
     if (ci.length) grouped.set(cat, ci);
   });
-
   let html = '';
   grouped.forEach((ci, cat) => {
     html += '<p class="results-group-label">' + cat.emoji + ' ' + cat.name + '</p>';
@@ -565,9 +623,10 @@ function escHtml(s) {
   return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 
-window.openSheet = openSheet;
-window.toggleCat = toggleCat;
-window.hideToast = hideToast;
+window.openSheet  = openSheet;
+window.openLegal  = openLegal;
+window.toggleCat  = toggleCat;
+window.hideToast  = hideToast;
 
 // ══ WIRE ═══════════════════════════════════════════
 function wire() {
@@ -578,6 +637,7 @@ function wire() {
   document.getElementById('btn-random-food').addEventListener('click', () => showRandom('food'));
 
   document.getElementById('sheet-backdrop').addEventListener('click', closeSheet);
+  document.getElementById('legal-backdrop').addEventListener('click', closeLegal);
 
   const inp = document.getElementById('search-input');
   inp.addEventListener('input', e => handleSearch(e.target.value));
@@ -597,14 +657,19 @@ function wire() {
     });
   });
 
-  const sheet = document.getElementById('item-sheet');
-  let startY = 0;
-  sheet.addEventListener('touchstart', e => { startY = e.touches[0].clientY; }, { passive: true });
-  sheet.addEventListener('touchend', e => {
-    if (e.changedTouches[0].clientY - startY > 80) closeSheet();
-  }, { passive: true });
+  // Swipe down to close sheets
+  [['item-sheet', closeSheet], ['legal-sheet', closeLegal]].forEach(([id, fn]) => {
+    const el = document.getElementById(id);
+    let startY = 0;
+    el.addEventListener('touchstart', e => { startY = e.touches[0].clientY; }, { passive: true });
+    el.addEventListener('touchend', e => {
+      if (e.changedTouches[0].clientY - startY > 80) fn();
+    }, { passive: true });
+  });
 
-  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeSheet(); });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') { closeSheet(); closeLegal(); }
+  });
 }
 
 document.addEventListener('DOMContentLoaded', boot);

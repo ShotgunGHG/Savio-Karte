@@ -20,9 +20,7 @@
 
     <!-- ══ SCREEN: DRINKS ══ -->
     <div class="screen active" id="screen-drinks">
-      <div class="ios-nav">
-        <span class="ios-nav-title">Getränke</span>
-      </div>
+      <div class="ios-nav"><span class="ios-nav-title">Getränke</span></div>
       <div class="chip-scroller-wrap">
         <div class="chip-scroller" id="drinks-chips"></div>
       </div>
@@ -35,15 +33,23 @@
           <button class="ghost-pill" id="btn-random-drink">🎲 Zufallsgetränk</button>
         </div>
         <div id="drinks-content"></div>
+        <div class="app-footer">
+          <p class="app-footer-name">© Café Savio · Mattersburg</p>
+          <div class="app-footer-links">
+            <button class="footer-link" onclick="openLegal('impressum')">Impressum</button>
+            <span class="footer-dot">·</span>
+            <button class="footer-link" onclick="openLegal('datenschutz')">Datenschutz</button>
+            <span class="footer-dot">·</span>
+            <button class="footer-link" onclick="openLegal('odr')">ODR</button>
+          </div>
+        </div>
         <div class="safe-bottom"></div>
       </div>
     </div>
 
     <!-- ══ SCREEN: FOOD ══ -->
     <div class="screen" id="screen-food">
-      <div class="ios-nav">
-        <span class="ios-nav-title">Speisen</span>
-      </div>
+      <div class="ios-nav"><span class="ios-nav-title">Speisen</span></div>
       <div class="chip-scroller-wrap">
         <div class="chip-scroller" id="food-chips"></div>
       </div>
@@ -56,6 +62,16 @@
           <button class="ghost-pill" id="btn-random-food">🍽 Zufallsspeise</button>
         </div>
         <div id="food-content"></div>
+        <div class="app-footer">
+          <p class="app-footer-name">© Café Savio · Mattersburg</p>
+          <div class="app-footer-links">
+            <button class="footer-link" onclick="openLegal('impressum')">Impressum</button>
+            <span class="footer-dot">·</span>
+            <button class="footer-link" onclick="openLegal('datenschutz')">Datenschutz</button>
+            <span class="footer-dot">·</span>
+            <button class="footer-link" onclick="openLegal('odr')">ODR</button>
+          </div>
+        </div>
         <div class="safe-bottom"></div>
       </div>
     </div>
@@ -97,142 +113,7 @@
       </div>
     </div>
 
-    <!-- ══ SCREEN: LEGAL ══ -->
-    <div class="screen" id="screen-legal">
-      <div class="ios-nav">
-        <span class="ios-nav-title">Rechtliches</span>
-      </div>
-      <div class="scroll-view">
-        <div class="legal-content">
-
-          <!-- IMPRESSUM -->
-          <div class="legal-section">
-            <p class="legal-section-eyebrow">§ 5 ECG · § 14 UGB · § 63 GewO</p>
-            <h2 class="legal-section-title">Impressum</h2>
-
-            <div class="legal-group">
-              <div class="legal-row">
-                <span class="legal-label">Betreiber</span>
-                <span class="legal-value">Verein Savio</span>
-              </div>
-              <div class="legal-row">
-                <span class="legal-label">Adresse</span>
-                <span class="legal-value">Hauptstraße 1, 7210 Mattersburg, Österreich</span>
-              </div>
-              <div class="legal-row">
-                <span class="legal-label">Telefon</span>
-                <span class="legal-value"><a href="tel:+436768373067">+43 676 837 306 74</a></span>
-              </div>
-              <div class="legal-row">
-                <span class="legal-label">E-Mail</span>
-                <span class="legal-value"><a href="mailto:office@verein-savio.at">office@verein-savio.at</a></span>
-              </div>
-              <div class="legal-row">
-                <span class="legal-label">Website</span>
-                <span class="legal-value"><a href="https://cafe-savio.at" target="_blank" rel="noopener">cafe-savio.at</a></span>
-              </div>
-              <div class="legal-row">
-                <span class="legal-label">Unternehmensgegenstand</span>
-                <span class="legal-value">Café- und Gastronomiebetrieb</span>
-              </div>
-              <div class="legal-row">
-                <span class="legal-label">Anwendbare Rechtsvorschriften</span>
-                <span class="legal-value">Gewerbeordnung (GewO); abrufbar unter <a href="https://www.ris.bka.gv.at" target="_blank" rel="noopener">ris.bka.gv.at</a></span>
-              </div>
-              <div class="legal-row">
-                <span class="legal-label">Aufsichtsbehörde</span>
-                <span class="legal-value">Bezirkshauptmannschaft Mattersburg</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- DATENSCHUTZ -->
-          <div class="legal-section">
-            <p class="legal-section-eyebrow">Art. 13 DSGVO (EU) 2016/679 · DSG</p>
-            <h2 class="legal-section-title">Datenschutzerklärung</h2>
-
-            <div class="legal-group">
-              <div class="legal-block">
-                <p class="legal-block-title">1. Verantwortlicher</p>
-                <p class="legal-block-text">Verantwortlicher im Sinne der DSGVO ist: Verein Savio, Hauptstraße 1, 7210 Mattersburg · office@verein-savio.at</p>
-              </div>
-              <div class="legal-block">
-                <p class="legal-block-title">2. Erhobene Daten & Zweck</p>
-                <p class="legal-block-text">Diese digitale Speisekarte ist eine rein informative Webanwendung. Es werden <strong>keine personenbezogenen Daten</strong> erhoben, gespeichert oder verarbeitet. Es gibt keine Nutzerkonten, keine Kontaktformulare, keine Newsletter und keine Zahlungsvorgänge.</p>
-              </div>
-              <div class="legal-block">
-                <p class="legal-block-title">3. Cookies & Tracking</p>
-                <p class="legal-block-text">Diese Anwendung verwendet <strong>keine Cookies</strong>, kein Tracking, keine Analyse-Tools (z. B. Google Analytics) und keine Social-Media-Plugins. Es werden keinerlei Nutzungsdaten an Dritte weitergegeben.</p>
-              </div>
-              <div class="legal-block">
-                <p class="legal-block-title">4. Hosting</p>
-                <p class="legal-block-text">Diese Anwendung wird über GitHub Pages (GitHub, Inc., 88 Colin P Kelly Jr St, San Francisco, CA 94107, USA) gehostet. Beim Aufruf der Seite werden durch GitHub technisch bedingt Server-Logfiles gespeichert (IP-Adresse, Datum, Uhrzeit, aufgerufene Seite). Diese Verarbeitung erfolgt auf Basis von Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse an der technischen Bereitstellung). Weitere Informationen: <a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement" target="_blank" rel="noopener">GitHub Privacy Statement</a>.</p>
-              </div>
-              <div class="legal-block">
-                <p class="legal-block-title">5. Google Fonts</p>
-                <p class="legal-block-text">Diese Anwendung lädt Schriftarten von Google Fonts (Google Ireland Limited, Gordon House, Barrow Street, Dublin 4, Irland). Dabei wird Ihre IP-Adresse an Google übermittelt. Rechtsgrundlage ist Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse an einheitlicher Darstellung). Weitere Informationen: <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Google Datenschutzerklärung</a>.</p>
-              </div>
-              <div class="legal-block">
-                <p class="legal-block-title">6. Ihre Rechte (Art. 15–22 DSGVO)</p>
-                <p class="legal-block-text">Sie haben das Recht auf <strong>Auskunft</strong> (Art. 15), <strong>Berichtigung</strong> (Art. 16), <strong>Löschung</strong> (Art. 17), <strong>Einschränkung der Verarbeitung</strong> (Art. 18), <strong>Datenübertragbarkeit</strong> (Art. 20) und <strong>Widerspruch</strong> (Art. 21). Da wir keine personenbezogenen Daten verarbeiten, sind diese Rechte faktisch gegenstandslos — aber rechtlich vollständig gewährt.</p>
-              </div>
-              <div class="legal-block">
-                <p class="legal-block-title">7. Beschwerderecht</p>
-                <p class="legal-block-text">Sie haben das Recht, Beschwerde bei der österreichischen Datenschutzbehörde einzulegen:<br/><br/>Österreichische Datenschutzbehörde (DSB)<br/>Barichgasse 40–42, 1030 Wien<br/>Tel.: +43 1 52 152-0<br/><a href="mailto:dsb@dsb.gv.at">dsb@dsb.gv.at</a> · <a href="https://www.dsb.gv.at" target="_blank" rel="noopener">dsb.gv.at</a></p>
-              </div>
-            </div>
-          </div>
-
-          <!-- HAFTUNGSAUSSCHLUSS -->
-          <div class="legal-section">
-            <p class="legal-section-eyebrow">Inhaltliche Verantwortung</p>
-            <h2 class="legal-section-title">Haftungsausschluss</h2>
-            <div class="legal-group">
-              <div class="legal-block">
-                <p class="legal-block-title">Inhalt</p>
-                <p class="legal-block-text">Die Inhalte dieser Speisekarte wurden sorgfältig erstellt. Alle Angaben zu Preisen, Zutaten und Verfügbarkeit sind unverbindlich und können ohne Vorankündigung geändert werden. Maßgeblich sind stets die im Café ausgehängten aktuellen Preislisten.</p>
-              </div>
-              <div class="legal-block">
-                <p class="legal-block-title">Allergene & Unverträglichkeiten</p>
-                <p class="legal-block-text">Angaben zu Allergenen dienen der Orientierung gemäß der EU-Lebensmittelinformationsverordnung (LMIV, EU Nr. 1169/2011). Bei schweren Allergien oder Unverträglichkeiten wenden Sie sich bitte direkt an unser Personal.</p>
-              </div>
-              <div class="legal-block">
-                <p class="legal-block-title">Externe Links</p>
-                <p class="legal-block-text">Diese Seite enthält Links zu externen Websites. Für deren Inhalte übernehmen wir keine Haftung. Für die Inhalte der verlinkten Seiten ist ausschließlich deren Betreiber verantwortlich.</p>
-              </div>
-            </div>
-          </div>
-
-          <!-- ODR -->
-          <div class="legal-section">
-            <p class="legal-section-eyebrow">EU-Verordnung Nr. 524/2013</p>
-            <h2 class="legal-section-title">Online-Streitbeilegung</h2>
-            <div class="legal-group">
-              <div class="legal-block">
-                <p class="legal-block-text">Die Europäische Kommission stellt eine Plattform zur Online-Streitbeilegung (OS) bereit:<br/><br/><a href="https://ec.europa.eu/consumers/odr" target="_blank" rel="noopener">ec.europa.eu/consumers/odr</a><br/><br/>Wir sind weder verpflichtet noch bereit, an einem Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen.</p>
-              </div>
-            </div>
-          </div>
-
-          <!-- URHEBERRECHT -->
-          <div class="legal-section">
-            <p class="legal-section-eyebrow">§ 1 UrhG</p>
-            <h2 class="legal-section-title">Urheberrecht</h2>
-            <div class="legal-group">
-              <div class="legal-block">
-                <p class="legal-block-text">Alle auf dieser Seite veröffentlichten Inhalte (Texte, Grafiken, Design) sind urheberrechtlich geschützt. Eine Verwendung ohne ausdrückliche Genehmigung des Betreibers ist nicht gestattet.</p>
-              </div>
-            </div>
-          </div>
-
-          <p class="legal-footer-note">Stand: Juni 2026 · Erstellt gemäß österreichischem Recht (ECG, UGB, GewO, DSG) und EU-DSGVO</p>
-
-        </div>
-        <div class="safe-bottom"></div>
-      </div>
-    </div>
-
-  </div><!-- /app -->
+  </div>
 
   <!-- ══ TAB BAR ══ -->
   <nav class="tab-bar">
@@ -248,18 +129,24 @@
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.35-4.35"/></svg>
       <span>Suche</span>
     </button>
-    <button class="tab" data-tab="legal" aria-label="Rechtliches">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-      <span>Rechtliches</span>
-    </button>
   </nav>
 
-  <!-- ══ BOTTOM SHEET ══ -->
+  <!-- ══ BOTTOM SHEET (items) ══ -->
   <div class="sheet-backdrop" id="sheet-backdrop" hidden></div>
   <div class="sheet" id="item-sheet" hidden>
     <div class="sheet-handle-bar"><div class="sheet-handle"></div></div>
     <div class="sheet-scroll-area">
       <div id="sheet-body"></div>
+      <div class="safe-bottom"></div>
+    </div>
+  </div>
+
+  <!-- ══ LEGAL SHEET ══ -->
+  <div class="sheet-backdrop" id="legal-backdrop" hidden></div>
+  <div class="sheet" id="legal-sheet" hidden>
+    <div class="sheet-handle-bar"><div class="sheet-handle"></div></div>
+    <div class="sheet-scroll-area">
+      <div id="legal-body"></div>
       <div class="safe-bottom"></div>
     </div>
   </div>
