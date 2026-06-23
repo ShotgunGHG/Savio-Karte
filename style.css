@@ -494,3 +494,100 @@ mark { background:rgba(192,150,72,.3); color:inherit; border-radius:2px; padding
   .sheet { max-width:430px; left:50%; right:auto; transform:translateX(-50%); }
   .toast { max-width:398px; left:50%; right:auto; transform:translateX(-50%); }
 }
+
+/* ══ LEGAL SCREEN ══════════════════════════════════ */
+.legal-content {
+  padding: 20px 16px 0;
+}
+.legal-section {
+  margin-bottom: 28px;
+}
+.legal-section-eyebrow {
+  font-size: .62rem;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--gold);
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+.legal-section-title {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 400;
+  letter-spacing: .04em;
+  color: var(--text);
+  margin-bottom: 12px;
+}
+.legal-group {
+  background: var(--bg2);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+.legal-row {
+  display: flex;
+  gap: 12px;
+  padding: 11px 14px;
+  position: relative;
+}
+.legal-row:not(:last-child) {
+  border-bottom: 0.5px solid var(--border);
+}
+.legal-label {
+  font-size: .75rem;
+  font-weight: 600;
+  color: var(--text3);
+  width: 110px;
+  flex-shrink: 0;
+  padding-top: 1px;
+  letter-spacing: .01em;
+}
+.legal-value {
+  font-size: .82rem;
+  color: var(--text2);
+  line-height: 1.55;
+  flex: 1;
+}
+.legal-value a {
+  color: var(--gold);
+  text-decoration: none;
+}
+.legal-value a:active { opacity: .7; }
+
+.legal-block {
+  padding: 13px 14px;
+}
+.legal-block:not(:last-child) {
+  border-bottom: 0.5px solid var(--border);
+}
+.legal-block-title {
+  font-size: .78rem;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 5px;
+  letter-spacing: .01em;
+}
+.legal-block-text {
+  font-size: .8rem;
+  color: var(--text2);
+  line-height: 1.65;
+}
+.legal-block-text a {
+  color: var(--gold);
+  text-decoration: none;
+}
+.legal-block-text strong {
+  color: var(--text);
+  font-weight: 600;
+}
+
+.legal-footer-note {
+  font-size: .68rem;
+  color: var(--text3);
+  text-align: center;
+  padding: 8px 0 24px;
+  letter-spacing: .03em;
+}
+
+/* 4 tabs — slightly smaller font to fit */
+.tab { font-size: .58rem; }
+.tab svg { width: 20px; height: 20px; }
